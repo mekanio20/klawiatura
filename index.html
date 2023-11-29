@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klawiatura</title>
+    <style>
+        .wrapper {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .container__words {
+            border: 1px solid black;
+            padding: 10px 30px;
+            margin-bottom: 50px;
+        }
+
+        .words {
+            display: flex;
+            font-size: 25px;
+            font-weight: 200;
+        }
+
+        .container__input {
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .input {
+            width: 100%;
+        }
+
+        .container__button {
+            display: block;
+        }
+
+        .button {
+            border: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+        }
+
+        .container__point {
+            border: 1px solid black;
+            padding: 0 30px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="wrapper">
+        <div class="container">
+            <div class="container__words">
+                <div class="words"></div>
+            </div>
+            <div class="container__input">
+                <input class="input" type="text">
+            </div>
+            <div class="container__button">
+                <button class="button" type="button">Start</button>
+            </div>
+            <div class="container__point">
+                <p class="point">0</p>
+            </div>
+            <div class="container__time">
+                <p class="time">0</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let point = 0
+        let second = 0
+        let words_output = document.querySelector('.words')
+        let time_output = document.querySelector('.time')
+        let point_output = document.querySelector('.point')
+        const input = document.querySelector('.input')
+        const button = document.querySelector('.button')
+        const words = ['okuw', 'ishlemek', 'bardym', 'azyndan', 'salam', 'guneshli', 'maslahat', 'agzybir', 'mugallym', 'yagysh', 'suw', 'yoda', 'agsham', 'deniz', 'mawy']
+
+        for (let i=0; i<words.length; i++) {
+            let p = document.createElement('p')
+            p.innerHTML = words[i]
+            p.style.padding = '10px'
+            words_output.appendChild(p)
+        }
+
+        button.addEventListener('click', (e) => {
+            e.preventDefault()
+            ContinueTime()
+            const myInterval = setInterval(() => {
+                second += 1 
+                if (second == 60) { 
+                    input.setAttribute('disabled', 'disabled')
+                    clearInterval(myInterval) 
+                }
+                time_output.innerHTML = second
+            }, 1000);
+        }, false)
+
+        const ContinueTime = () => {
+            let x = -1
+            let word = ''
+            words_output.childNodes[x+1].style.background = '#ccc'
+            
+            const intut_event = input.addEventListener('keypress', (event) => {
+                word = input.value
+                words_output.childNodes[x+1].style.background = '#ccc'
+                
+                if (event.code == 'Enter') {
+                    words_output.childNodes[x+1].style.background = 'none'
+                    input.value = ''
+                    x += 1
+                    if (x < words.length-1)
+                        words_output.childNodes[x+1].style.background = '#ccc'
+                        
+                    if (x == words.length - 1) { 
+                        x = -1
+                        for (let i=0; i<words.length; i++) {
+                            words_output.children[i].style.color = 'black'
+                        }
+                        words_output.childNodes[x+1].style.background = '#ccc'
+                    }
+                    if (words[x] == word) {
+                        point += 1
+                        point_output.innerHTML = point
+                        words_output.childNodes[x].style.color = 'green'
+                    } else {
+                        words_output.childNodes[x].style.color = 'red'
+                    }
+                }
+
+            }, false)
+        }
+
+
+    </script>
+</body>
+</html>
